@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring-2.23.3.xsd">
+    <bean class="org.mycompany.ProcessorChoice" id="choix"/>
+    <bean class="org.mycompany.Splitter" id="splitter"/>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="file:C:\Users\mecha\Downloads\PrixCarburants"/>
+            <unmarshal id="_unmarshal1">
+                <xmlBeans/>
+            </unmarshal>
+            <log id="_log1" message="On a passé le Unmarshal"/>
+            <to id="_to1" uri="direct:javaObjects"/>
+        </route>
+        <route id="_route2">
+            <from id="_from2" uri="direct:javaObjects"/>
+            <process id="_process2" ref="splitter"/>
+            <process id="_process1" ref="choix"/>
+            <recipientList id="_recipientList1">
+                <header>file</header>
+            </recipientList>
+        </route>
+    </camelContext>
+</beans>
